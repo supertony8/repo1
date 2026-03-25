@@ -1,11 +1,11 @@
-* ============= НАЧАЛО ФАЙЛА =============
-* Точка входа - исполняемый код
+* ============= РќРђР§РђР›Рћ Р¤РђР™Р›Рђ =============
+* РўРѕС‡РєР° РІС…РѕРґР° - РёСЃРїРѕР»РЅСЏРµРјС‹Р№ РєРѕРґ
 * new in github
 DO Main
 RETURN
 
 *------------------------------------------------------------------------------
-* Универсальная процедура формирования машинограммы
+* РЈРЅРёРІРµСЂСЃР°Р»СЊРЅР°СЏ РїСЂРѕС†РµРґСѓСЂР° С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РјР°С€РёРЅРѕРіСЂР°РјРјС‹
 *------------------------------------------------------------------------------
 PROCEDURE CreateMachinogram
    LPARAMETERS tcKodSign, tcTitle, tlShowHeader, tlShowDetail, tlShowTotals, tcCursorName, tcFilter, tcProductCode, tcCEH
@@ -13,43 +13,43 @@ PROCEDURE CreateMachinogram
    PRIVATE m.line1
    m.line1 = REPLICATE('-', 132)
 
-   * Сохраняем текущую область
+   * РЎРѕС…СЂР°РЅСЏРµРј С‚РµРєСѓС‰СѓСЋ РѕР±Р»Р°СЃС‚СЊ
    PRIVATE m.curSelect
    m.curSelect = SELECT()
 
-   * Переходим в курсор с данными
+   * РџРµСЂРµС…РѕРґРёРј РІ РєСѓСЂСЃРѕСЂ СЃ РґР°РЅРЅС‹РјРё
    IF EMPTY(tcCursorName) OR !USED(tcCursorName)
       RETURN .F.
    ENDIF
 
    SELECT (tcCursorName)
 
-   * Применяем фильтр если указан
+   * РџСЂРёРјРµРЅСЏРµРј С„РёР»СЊС‚СЂ РµСЃР»Рё СѓРєР°Р·Р°РЅ
    IF !EMPTY(tcFilter)
       SET FILTER TO &tcFilter
    ENDIF
 
    GO TOP
 
-   * Заголовок машинограммы
+   * Р—Р°РіРѕР»РѕРІРѕРє РјР°С€РёРЅРѕРіСЂР°РјРјС‹
    DO signal3 WITH 'SAY', tcKodSign, ''
    DO signal3 WITH 'SAY', tcKodSign, ''
    DO signal3 WITH 'SAY', tcKodSign, ''
    DO signal3 WITH 'SAY', tcKodSign, m.line1
    DO signal3 WITH 'SAY', tcKodSign, tcTitle
-   DO signal3 WITH 'SAY', tcKodSign, [ИЗДЕЛИЕ: ] + RTRIM(LTRIM(tcProductCode)) + [ ЦЕХ: ] + LTRIM(STR(tcCEH))
-   DO signal3 WITH 'SAY', tcKodSign, [Строк: ] + LTRIM(STR(RECCOUNT()))
+   DO signal3 WITH 'SAY', tcKodSign, [РР—Р”Р•Р›РР•: ] + RTRIM(LTRIM(tcProductCode)) + [ Р¦Р•РҐ: ] + LTRIM(STR(tcCEH))
+   DO signal3 WITH 'SAY', tcKodSign, [РЎС‚СЂРѕРє: ] + LTRIM(STR(RECCOUNT()))
    DO signal3 WITH 'SAY', tcKodSign, m.line1
 
-   * Шапка таблицы
+   * РЁР°РїРєР° С‚Р°Р±Р»РёС†С‹
    IF tlShowHeader AND !EOF()
-      DO signal3 WITH 'SAY', tcKodSign, '|' + [Номер] + PADR([| Код изделия], 19) + [| ] + PADR([Код ДСЕ], 22) + [| ] + PADR([Наименование ДСЕ], 21) + [| ] + PADR([Маршрут ДСЕ], 33)
+      DO signal3 WITH 'SAY', tcKodSign, '|' + [РќРѕРјРµСЂ] + PADR([| РљРѕРґ РёР·РґРµР»РёСЏ], 19) + [| ] + PADR([РљРѕРґ Р”РЎР•], 22) + [| ] + PADR([РќР°РёРјРµРЅРѕРІР°РЅРёРµ Р”РЎР•], 21) + [| ] + PADR([РњР°СЂС€СЂСѓС‚ Р”РЎР•], 33)
       DO signal3 WITH 'SAY', tcKodSign, m.line1
-      DO signal3 WITH 'SAY', tcKodSign, SPACE(10) + PADR([ Применяемость ], 15) + PADR([| Матер.затраты на ДСЕ.], 24) + [| ] + PADR([Норма времени на ДСЕ.], 21) + [| ] + PADR([З/п на ДСЕ], 15) + [| ] + PADR([Премия на ДСЕ.], 15) + [|] + PADR([ПКИ на ДСЕ], 15)
+      DO signal3 WITH 'SAY', tcKodSign, SPACE(10) + PADR([ РџСЂРёРјРµРЅСЏРµРјРѕСЃС‚СЊ ], 15) + PADR([| РњР°С‚РµСЂ.Р·Р°С‚СЂР°С‚С‹ РЅР° Р”РЎР•.], 24) + [| ] + PADR([РќРѕСЂРјР° РІСЂРµРјРµРЅРё РЅР° Р”РЎР•.], 21) + [| ] + PADR([Р—/Рї РЅР° Р”РЎР•], 15) + [| ] + PADR([РџСЂРµРјРёСЏ РЅР° Р”РЎР•.], 15) + [|] + PADR([РџРљР РЅР° Р”РЎР•], 15)
       DO signal3 WITH 'SAY', tcKodSign, m.line1
    ENDIF
 
-   * Детальные строки
+   * Р”РµС‚Р°Р»СЊРЅС‹Рµ СЃС‚СЂРѕРєРё
    IF tlShowDetail AND !EOF()
       PRIVATE m.kmat1, m.counter, m.pp
       PRIVATE m.prev_oldkmat2, m.cur_oldkmat2
@@ -70,14 +70,14 @@ PROCEDURE CreateMachinogram
          m.display_oldkmat2 = ALLTRIM(STRTRAN(m.oldkmat2, ".", ""))
          m.cur_oldkmat2 = m.oldkmat2
 
-         * Промежуточный итог по изделию
+         * РџСЂРѕРјРµР¶СѓС‚РѕС‡РЅС‹Р№ РёС‚РѕРі РїРѕ РёР·РґРµР»РёСЋ
          IF !EMPTY(m.cur_oldkmat2) AND m.cur_oldkmat2 != m.prev_oldkmat2 AND !EMPTY(m.prev_oldkmat2) AND m.sum_kol > 0
             DO PrintSubtotal WITH tcKodSign, m.display_prev_oldkmat2, tcCEH, ;
                m.sum_mz_izd_ki, m.sum_nvrizd_ki, m.sum_zpizd_ki, m.sum_pr_izd_ki, m.sum_pz_izd_ki
             STORE 0 TO m.sum_kol, m.sum_mz_izd_ki, m.sum_nvrizd_ki, m.sum_zpizd_ki, m.sum_pr_izd_ki, m.sum_pz_izd_ki
          ENDIF
 
-         * Формирование строки с кодом ДСЕ
+         * Р¤РѕСЂРјРёСЂРѕРІР°РЅРёРµ СЃС‚СЂРѕРєРё СЃ РєРѕРґРѕРј Р”РЎР•
          IF (m.kmat1 = m.kmat2) AND (m.counter > 1)
             m.pp = m.pp + 1
             m.kmat2 = []
@@ -85,7 +85,7 @@ PROCEDURE CreateMachinogram
             m.pp = 1
          ENDIF
 
-         * Вывод строки ДСЕ
+         * Р’С‹РІРѕРґ СЃС‚СЂРѕРєРё Р”РЎР•
          LOCAL cText, nLines, i, iw
          iw = 55
          cText = ALLTRIM(STRTRAN(MARSHRUT2, ".", ""))
@@ -100,10 +100,10 @@ PROCEDURE CreateMachinogram
             ENDFOR
          ENDIF
 
-         * Вывод числовых значений
+         * Р’С‹РІРѕРґ С‡РёСЃР»РѕРІС‹С… Р·РЅР°С‡РµРЅРёР№
          DO signal3 WITH 'SAY', tcKodSign, SPACE(6) + p + PADL(ALLTRIM(STR(KOL*KOL_TOT, 17, 5)), 17, ' ') + p + PADL(ALLTRIM(STR(MZ_DSE, 15, 5)), 22, ' ') + p + PADL(ALLTRIM(STR(NVR_DSE, 14, 5)), 21, ' ') + p + PADL(ALLTRIM(STR(ZP_DSE, 11, 5)), 15, ' ') + p + PADL(ALLTRIM(STR(PR_DSE, 11, 5)), 15, ' ') + p + PADR(ALLTRIM(STR(PZ_DSE, 11, 5)), 15, ' ')
 
-         * Накопление итогов
+         * РќР°РєРѕРїР»РµРЅРёРµ РёС‚РѕРіРѕРІ
          IF !EMPTY(m.oldkmat2)
             m.kol2 = KOL * KOL_TOT
             m.sum_kol = m.sum_kol + m.kol2
@@ -119,26 +119,26 @@ PROCEDURE CreateMachinogram
          m.display_prev_oldkmat2 = m.display_oldkmat2
       ENDSCAN
 
-      * Итог по последнему изделию
+      * РС‚РѕРі РїРѕ РїРѕСЃР»РµРґРЅРµРјСѓ РёР·РґРµР»РёСЋ
       IF !EMPTY(m.prev_oldkmat2) AND m.sum_kol > 0
          DO PrintSubtotal WITH tcKodSign, m.display_prev_oldkmat2, tcCEH, ;
             m.sum_mz_izd_ki, m.sum_nvrizd_ki, m.sum_zpizd_ki, m.sum_pr_izd_ki, m.sum_pz_izd_ki
       ENDIF
    ENDIF
 
-   * Общие итоги
+   * РћР±С‰РёРµ РёС‚РѕРіРё
    IF tlShowTotals
       DO PrintTotal WITH tcKodSign, tcCursorName, tcProductCode
    ENDIF
 
-   * Восстанавливаем область
+   * Р’РѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµРј РѕР±Р»Р°СЃС‚СЊ
    SELECT (m.curSelect)
 
    RETURN .T.
 ENDPROC
 
 *------------------------------------------------------------------------------
-* Вспомогательная процедура для вывода промежуточных итогов
+* Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅР°СЏ РїСЂРѕС†РµРґСѓСЂР° РґР»СЏ РІС‹РІРѕРґР° РїСЂРѕРјРµР¶СѓС‚РѕС‡РЅС‹С… РёС‚РѕРіРѕРІ
 *------------------------------------------------------------------------------
 PROCEDURE PrintSubtotal
    LPARAMETERS tcKodSign, tcProduct, tnCEH, tnMZ, tnNVR, tnZP, tnPR, tnPZ
@@ -147,7 +147,7 @@ PROCEDURE PrintSubtotal
    m.line1 = REPLICATE('-', 132)
 
    DO signal3 WITH 'SAY', tcKodSign, m.line1
-   DO signal3 WITH 'SAY', tcKodSign, [Итого по изделию ] + tcProduct + [ по цеху ] + LTRIM(STR(tnCEH)) + [:]
+   DO signal3 WITH 'SAY', tcKodSign, [РС‚РѕРіРѕ РїРѕ РёР·РґРµР»РёСЋ ] + tcProduct + [ РїРѕ С†РµС…Сѓ ] + LTRIM(STR(tnCEH)) + [:]
 
    LOCAL lcMZ, lcNVR, lcZP, lcPR, lcPZ
    lcMZ = PADL(ALLTRIM(STR(tnMZ, 11, 5)), 19, ' ')
@@ -161,7 +161,7 @@ PROCEDURE PrintSubtotal
 ENDPROC
 
 *------------------------------------------------------------------------------
-* Вспомогательная процедура для вывода общих итогов
+* Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅР°СЏ РїСЂРѕС†РµРґСѓСЂР° РґР»СЏ РІС‹РІРѕРґР° РѕР±С‰РёС… РёС‚РѕРіРѕРІ
 *------------------------------------------------------------------------------
 PROCEDURE PrintTotal
    LPARAMETERS tcKodSign, tcCursorName, tcProductCode
@@ -172,7 +172,7 @@ PROCEDURE PrintTotal
 
    SELECT (tcCursorName)
 
-   * Суммируем по всем записям
+   * РЎСѓРјРјРёСЂСѓРµРј РїРѕ РІСЃРµРј Р·Р°РїРёСЃСЏРј
    CALCULATE SUM(MZ_DSE*KOL*KOL_TOT), SUM(NVR_DSE*KOL*KOL_TOT), ;
                SUM(ZP_DSE*KOL*KOL_TOT), SUM(PR_DSE*KOL*KOL_TOT), ;
                SUM(PZ_IZD), CNT() TO ;
@@ -182,7 +182,7 @@ PROCEDURE PrintTotal
    DO signal3 WITH 'SAY', tcKodSign, ''
    DO signal3 WITH 'SAY', tcKodSign, ''
    DO signal3 WITH 'SAY', tcKodSign, m.line1
-   DO signal3 WITH 'SAY', tcKodSign, [Итого по изделию ] + tcProductCode + [ по всем цехам:]
+   DO signal3 WITH 'SAY', tcKodSign, [РС‚РѕРіРѕ РїРѕ РёР·РґРµР»РёСЋ ] + tcProductCode + [ РїРѕ РІСЃРµРј С†РµС…Р°Рј:]
 
    LOCAL lcMZ, lcNVR, lcZP, lcPR, lcPZ
    lcMZ = PADL(ALLTRIM(STR(m.tot_mz, 11, 5)), 19, ' ')
@@ -198,7 +198,7 @@ PROCEDURE PrintTotal
 ENDPROC
 
 *------------------------------------------------------------------------------
-* Функция форматирования чисел
+* Р¤СѓРЅРєС†РёСЏ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёСЏ С‡РёСЃРµР»
 *------------------------------------------------------------------------------
 FUNCTION FormatSum(tnValue)
    LOCAL lcResult, lnAbsValue
@@ -225,7 +225,7 @@ FUNCTION FormatSum(tnValue)
 ENDFUNC
 
 *==============================================================================
-* ПРОЦЕДУРА ОБРАБОТКИ ОДНОГО ИЗДЕЛИЯ
+* РџР РћР¦Р•Р”РЈР Рђ РћР‘Р РђР‘РћРўРљР РћР”РќРћР“Рћ РР—Р”Р•Р›РРЇ
 *==============================================================================
 PROCEDURE ProcessOneItem
    LPARAMETERS tcOldKmat1, tcKodSign
@@ -235,19 +235,19 @@ PROCEDURE ProcessOneItem
    m.kodsign = tcKodSign
    m.line1 = REPLICATE('-', 132)
 
-   * Массив для хранения итогов по цехам
+   * РњР°СЃСЃРёРІ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РёС‚РѕРіРѕРІ РїРѕ С†РµС…Р°Рј
    PRIVATE m.ceh_totals
    DIMENSION m.ceh_totals[1, 6]  && 1: CEH, 2: MZ, 3: NVR, 4: ZP, 5: PR, 6: PZ
    STORE 0 TO m.ceh_totals
    m.ceh_index = 0
 
-   * Полный запрос как в оригинале, но без лишних полей для экономии
+   * РџРѕР»РЅС‹Р№ Р·Р°РїСЂРѕСЃ РєР°Рє РІ РѕСЂРёРіРёРЅР°Р»Рµ, РЅРѕ Р±РµР· Р»РёС€РЅРёС… РїРѕР»РµР№ РґР»СЏ СЌРєРѕРЅРѕРјРёРё
    m.sql3 = [SELECT DISTINCT CEH FROM _PRZ WHERE OLDKMAT_IZ = ?] + s(m.oldkmat1) + [ ORDER BY CEH ASC]
    = usql_exec(m.sql3, [list_cehs], [ /TRANSNULL:*])
 
    SELECT list_cehs
    IF RECCOUNT() = 0
-      DO signal3 WITH 'SAY', m.kodsign, [Нет цехов для изделия ] + m.oldkmat1
+      DO signal3 WITH 'SAY', m.kodsign, [РќРµС‚ С†РµС…РѕРІ РґР»СЏ РёР·РґРµР»РёСЏ ] + m.oldkmat1
       RETURN
    ENDIF
 
@@ -256,7 +256,7 @@ PROCEDURE ProcessOneItem
       m.SEL_CEH = CEH
       m.testmarshrut = ITRANDOMNAME()
 
-      * ПОЛНЫЙ ОРИГИНАЛЬНЫЙ ЗАПРОС (без изменений)
+      * РџРћР›РќР«Р™ РћР РР“РРќРђР›Р¬РќР«Р™ Р—РђРџР РћРЎ (Р±РµР· РёР·РјРµРЅРµРЅРёР№)
       m.sql1 = "SELECT " + ;
                "(SELECT KSM.oldkmat FROM KSM WHERE KSM.KMAT=_PRZ.KMATGP) AS oldkmat2, NMAT, " + ;
                "1 AS KOL, KOL_MAT, KOL_PKI, KOL_PR, KOL_TOT, KOL_ZP, MARSHRUT AS MARSHRUT2, MZ_DSE, MZ_IZD, NVR_DSE, " + ;
@@ -268,7 +268,7 @@ PROCEDURE ProcessOneItem
 
       = usql_exec(m.sql1, m.testmarshrut, [/TRANSNULL:*])
 
-      * Накапливаем итоги по цеху
+      * РќР°РєР°РїР»РёРІР°РµРј РёС‚РѕРіРё РїРѕ С†РµС…Сѓ
       SELECT (m.testmarshrut)
       IF RECCOUNT() > 0
          SUM MZ_DSE * KOL * KOL_TOT, ;
@@ -294,31 +294,31 @@ PROCEDURE ProcessOneItem
    = usedele('list_cehs')
 
    *===========================================================================
-   * ВЫВОД ТОЛЬКО СВОДНЫХ ИТОГОВ ПО ЦЕХАМ (В ДВЕ КОЛОНКИ)
+   * Р’Р«Р’РћР” РўРћР›Р¬РљРћ РЎР’РћР”РќР«РҐ РРўРћР“РћР’ РџРћ Р¦Р•РҐРђРњ (Р’ Р”Р’Р• РљРћР›РћРќРљР)
    *===========================================================================
    IF m.ceh_index > 0
       DO signal3 WITH 'SAY', m.kodsign, ''
       DO signal3 WITH 'SAY', m.kodsign, ''
       DO signal3 WITH 'SAY', m.kodsign, ''
       DO signal3 WITH 'SAY', m.kodsign, REPLICATE('-', 132)
-      DO signal3 WITH 'SAY', m.kodsign, [СВОДНЫЕ ИТОГИ ПО ЦЕХАМ]
-      DO signal3 WITH 'SAY', m.kodsign, [Изделие: ] + m.oldkmat1 + SPACE(10) + [Дата: ] + TTOC(ITDATETIME())
+      DO signal3 WITH 'SAY', m.kodsign, [РЎР’РћР”РќР«Р• РРўРћР“Р РџРћ Р¦Р•РҐРђРњ]
+      DO signal3 WITH 'SAY', m.kodsign, [РР·РґРµР»РёРµ: ] + m.oldkmat1 + SPACE(10) + [Р”Р°С‚Р°: ] + TTOC(ITDATETIME())
       DO signal3 WITH 'SAY', m.kodsign, REPLICATE('-', 132)
 
-      * Заголовок таблицы в две колонки
+      * Р—Р°РіРѕР»РѕРІРѕРє С‚Р°Р±Р»РёС†С‹ РІ РґРІРµ РєРѕР»РѕРЅРєРё
       DO signal3 WITH 'SAY', m.kodsign, ;
-         [Цех Матер.затраты Норма времени     З/п   Премия    ПКИ  ||] + ;
-         [  Цех Матер.затраты Норма времени     З/п   Премия    ПКИ]
+         [Р¦РµС… РњР°С‚РµСЂ.Р·Р°С‚СЂР°С‚С‹ РќРѕСЂРјР° РІСЂРµРјРµРЅРё     Р—/Рї   РџСЂРµРјРёСЏ    РџРљР  ||] + ;
+         [  Р¦РµС… РњР°С‚РµСЂ.Р·Р°С‚СЂР°С‚С‹ РќРѕСЂРјР° РІСЂРµРјРµРЅРё     Р—/Рї   РџСЂРµРјРёСЏ    РџРљР]
       DO signal3 WITH 'SAY', m.kodsign, REPLICATE('-', 132)
 
-      * Расчет количества строк для левой и правой колонки
+      * Р Р°СЃС‡РµС‚ РєРѕР»РёС‡РµСЃС‚РІР° СЃС‚СЂРѕРє РґР»СЏ Р»РµРІРѕР№ Рё РїСЂР°РІРѕР№ РєРѕР»РѕРЅРєРё
       m.half = CEILING(m.ceh_index / 2)
 
-      * Вывод строк в две колонки с правильными отступами
+      * Р’С‹РІРѕРґ СЃС‚СЂРѕРє РІ РґРІРµ РєРѕР»РѕРЅРєРё СЃ РїСЂР°РІРёР»СЊРЅС‹РјРё РѕС‚СЃС‚СѓРїР°РјРё
       FOR m.i = 1 TO m.half
          m.j = m.i + m.half
 
-* Левая колонка
+* Р›РµРІР°СЏ РєРѕР»РѕРЅРєР°
          m.left_str = ;
             PADC(ALLTRIM(STR(m.ceh_totals[m.i, 1])), 4) + ' ' + ;
             PADC(ALLTRIM(STR(m.ceh_totals[m.i, 2], 11, 2)), 12) + ' ' + ;
@@ -327,7 +327,7 @@ PROCEDURE ProcessOneItem
             PADC(ALLTRIM(STR(m.ceh_totals[m.i, 5], 8, 2)), 8) + ' ' + ;
             PADC(ALLTRIM(STR(m.ceh_totals[m.i, 6], 8, 2)), 8)
 
-         * Правая колонка (если есть)
+         * РџСЂР°РІР°СЏ РєРѕР»РѕРЅРєР° (РµСЃР»Рё РµСЃС‚СЊ)
          IF m.j <= m.ceh_index
             m.right_str = ;
                PADC(ALLTRIM(STR(m.ceh_totals[m.j, 1])), 4) + ' ' + ;
@@ -345,7 +345,7 @@ PROCEDURE ProcessOneItem
 
       DO signal3 WITH 'SAY', m.kodsign, REPLICATE('-', 132)
 
-      * Итоговая строка
+      * РС‚РѕРіРѕРІР°СЏ СЃС‚СЂРѕРєР°
       m.tot_mz = 0
       m.tot_nvr = 0
       m.tot_zp = 0
@@ -360,9 +360,9 @@ PROCEDURE ProcessOneItem
          m.tot_pz = m.tot_pz + m.ceh_totals[m.i, 6]
       ENDFOR
 
-      * Итог в две колонки (по центру)
+      * РС‚РѕРі РІ РґРІРµ РєРѕР»РѕРЅРєРё (РїРѕ С†РµРЅС‚СЂСѓ)
       m.total_str = ;
-         PADL('ВСЕГО:', 6) + ' ' + ;
+         PADL('Р’РЎР•Р“Рћ:', 6) + ' ' + ;
          PADL(ALLTRIM(STR(m.tot_mz, 11, 2)), 11) + ' ' + ;
          PADL(ALLTRIM(STR(m.tot_nvr, 8, 2)), 10) + ' ' + ;
          PADL(ALLTRIM(STR(m.tot_zp, 8, 2)), 8) + ' ' + ;
@@ -372,53 +372,53 @@ PROCEDURE ProcessOneItem
       DO signal3 WITH 'SAY', m.kodsign, SPACE(1) + m.total_str
       DO signal3 WITH 'SAY', m.kodsign, REPLICATE('-', 132)
    ELSE
-      DO signal3 WITH 'SAY', m.kodsign, [Данные отсутствуют для изделия ] + m.oldkmat1
+      DO signal3 WITH 'SAY', m.kodsign, [Р”Р°РЅРЅС‹Рµ РѕС‚СЃСѓС‚СЃС‚РІСѓСЋС‚ РґР»СЏ РёР·РґРµР»РёСЏ ] + m.oldkmat1
    ENDIF
 ENDPROC
 *==============================================================================
-* ОСНОВНАЯ ПРОГРАММА - ТОЛЬКО СВОДНЫЕ ИТОГИ ПО ЦЕХАМ
+* РћРЎРќРћР’РќРђРЇ РџР РћР“Р РђРњРњРђ - РўРћР›Р¬РљРћ РЎР’РћР”РќР«Р• РРўРћР“Р РџРћ Р¦Р•РҐРђРњ
 *==============================================================================
 PROCEDURE Main
    PRIVATE m.kodsign, m.line1, m.debug1
    STORE '' TO m.kodsign, m.debug1
    m.line1 = REPLICATE('-', 132)
 
-   * Стартовать протокол
+   * РЎС‚Р°СЂС‚РѕРІР°С‚СЊ РїСЂРѕС‚РѕРєРѕР»
    PRIVATE m.SMes, m.God, m.GGGGMM
 
-   * Выбор изделия
+   * Р’С‹Р±РѕСЂ РёР·РґРµР»РёСЏ
    m.sql2 = [SELECT _IZD1.OLDKMAT1, ' ' AS PR_SEL FROM _IZD1 WHERE INCL>0 ORDER BY 1 ASC]
    = usql_exec(m.sql2, [menu1], [ /TRANSNULL:*])
    SELECT menu1
-   m.ret2 = MultyPop2(0, 0, 'PR_SEL', [oldkmat1 :h=' Изделие ':25:r], [Выберите изделие], [/OKCANCEL:"m.c", /MODIFY:"-"])
+   m.ret2 = MultyPop2(0, 0, 'PR_SEL', [oldkmat1 :h=' РР·РґРµР»РёРµ ':25:r], [Р’С‹Р±РµСЂРёС‚Рµ РёР·РґРµР»РёРµ], [/OKCANCEL:"m.c", /MODIFY:"-"])
 
-   * Если пользователь нажал Cancel - выход
+   * Р•СЃР»Рё РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ РЅР°Р¶Р°Р» Cancel - РІС‹С…РѕРґ
    IF m.ret2 = 0
       RETURN
    ENDIF
 
-   * Создаем курсор с выбранными изделиями
+   * РЎРѕР·РґР°РµРј РєСѓСЂСЃРѕСЂ СЃ РІС‹Р±СЂР°РЅРЅС‹РјРё РёР·РґРµР»РёСЏРјРё
    SELECT * FROM menu1 WHERE PR_SEL = '*' INTO CURSOR 'spisok2' READWRITE
 
-   * Если нет выбранных (помеченных '*'), используем текущее изделие
+   * Р•СЃР»Рё РЅРµС‚ РІС‹Р±СЂР°РЅРЅС‹С… (РїРѕРјРµС‡РµРЅРЅС‹С… '*'), РёСЃРїРѕР»СЊР·СѓРµРј С‚РµРєСѓС‰РµРµ РёР·РґРµР»РёРµ
    IF _TALLY = 0
       SELECT * FROM menu1 WHERE OLDKMAT1 = ALLTRIM(oldkmat1) INTO CURSOR 'spisok2' READWRITE
    ENDIF
 
-   * Проверка, что есть данные
+   * РџСЂРѕРІРµСЂРєР°, С‡С‚Рѕ РµСЃС‚СЊ РґР°РЅРЅС‹Рµ
    IF _TALLY = 0
-      = MessageBox('Не выбрано ни одного изделия', 48, 'Предупреждение')
+      = MessageBox('РќРµ РІС‹Р±СЂР°РЅРѕ РЅРё РѕРґРЅРѕРіРѕ РёР·РґРµР»РёСЏ', 48, 'РџСЂРµРґСѓРїСЂРµР¶РґРµРЅРёРµ')
       RETURN
    ENDIF
 
-   DO signal3 WITH 'INIT', m.kodsign, 'Сводные итоги по цехам', 'Дата: ' + TTOC(ITDATETIME())
+   DO signal3 WITH 'INIT', m.kodsign, 'РЎРІРѕРґРЅС‹Рµ РёС‚РѕРіРё РїРѕ С†РµС…Р°Рј', 'Р”Р°С‚Р°: ' + TTOC(ITDATETIME())
 
    m.debug1 = (RTRIM(LTRIM(m.UserIdUSer)) = 'TN11310')
    IF m.debug1
       DO signal3 WITH 'SAY', m.kodsign, [UserIdUSer: ] + m.UserIdUSer
    ENDIF
 
-   * Обработка всех выбранных изделий
+   * РћР±СЂР°Р±РѕС‚РєР° РІСЃРµС… РІС‹Р±СЂР°РЅРЅС‹С… РёР·РґРµР»РёР№
    SELECT spisok2
    SCAN
       m.current_oldkmat = ALLTRIM(OLDKMAT1)
@@ -426,23 +426,23 @@ PROCEDURE Main
    ENDSCAN
 
    DO signal3 WITH 'SAY', m.kodsign, ''
-   DO signal3 WITH 'SAY', m.kodsign, [Конец протокола. Дата: ] + TTOC(ITDATETIME())
+   DO signal3 WITH 'SAY', m.kodsign, [РљРѕРЅРµС† РїСЂРѕС‚РѕРєРѕР»Р°. Р”Р°С‚Р°: ] + TTOC(ITDATETIME())
 
-   * Сохранение в файл
+   * РЎРѕС…СЂР°РЅРµРЅРёРµ РІ С„Р°Р№Р»
    m.godmec = '202512'
    m.GGGGMM = m.godmec
    m.God = LEFT(m.GGGGMM, 4)
    m.SMes = RIGHT(m.GGGGMM, 2)
-   m.filenam1 = '\Сводные итоги по цехам'
+   m.filenam1 = '\РЎРІРѕРґРЅС‹Рµ РёС‚РѕРіРё РїРѕ С†РµС…Р°Рј'
    m.filesav = '\\192.168.10.131\IT_Work\Ant\' + m.SMes + m.God + m.filenam1
    m.dd = DIRECTORY(m.filesav)
 
    IF !m.dd
       MKDIR (m.filesav)
-      = wait('Каталог создан')
+      = wait('РљР°С‚Р°Р»РѕРі СЃРѕР·РґР°РЅ')
    ENDIF
 
-   m.filesav1 = m.filesav + '\' + [Сводные итоги по цехам] + '.txt'
+   m.filesav1 = m.filesav + '\' + [РЎРІРѕРґРЅС‹Рµ РёС‚РѕРіРё РїРѕ С†РµС…Р°Рј] + '.txt'
    DO signal3 WITH 'PRINT,/FILEOUT:' + m.filesav1 + ' /SUMMARY:-', m.kodsign
 
    = RunOnClient(m.filesav1, , , , .T.)
